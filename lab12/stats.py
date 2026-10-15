@@ -8,7 +8,29 @@ def wilson(k, n, z=1.96):
     #   Khoảng tin cậy Wilson. p = k/n; d = 1 + z^2/n; tâm = (p + z^2/(2n)) / d; nửa rộng = z *
     #   sqrt(p(1-p)/n + z^2/(4n^2)) / d. Trả (tâm - nửa rộng, tâm + nửa rộng) cắt trong [0, 1]. Nếu n = 0
     #   trả (nan, nan).
-    raise NotImplementedError("TODO wilson: xem GUIDE.md, Bước 4")
+    if n == 0:
+        return (np.nan, np.nan)
+    
+    p = k / n
+    z2 = z * z
+    d = 1 + z2 / n
+    center = (p + z2 / (2 * n)) / d
+    half = (z * np.sqrt(p * (1 - p) / n + z2 / (4 * n * n))) / d
+    
+    lo = center - half
+    hi = center + half
+    
+    # Clip to [0, 1]
+    lo = max(0.0, lo)
+    hi = min(1.0, hi)
+    
+    # Handle edge cases: k=0 -> lo=0, k=n -> hi=1
+    if k == 0:
+        lo = 0.0
+    if k == n:
+        hi = 1.0
+    
+    return (float(lo), float(hi))
 
 
 def rate(flags):
