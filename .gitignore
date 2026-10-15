@@ -4,3 +4,4 @@ __pycache__/
 *.pyc
 viz/lab_models.js
 viz/lab_data.js
+.venv
